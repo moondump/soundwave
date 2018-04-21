@@ -20,7 +20,6 @@ router.route('/signin').get((req, res) => {
 
   User.findOne({ username: username })
     .then(user => {
-
       if (user === null) {
         return res.send(400, 'user not found');
       }
@@ -32,19 +31,20 @@ router.route('/signin').get((req, res) => {
           res.status(401).send('Not a valid password: ' + err);
           return;
         }
-        User.findOne({
+        return User.findOne({
           username: username
         })
-          .then((results) => {
-            Song.find( {
-              userId: results._id
-            })
-              .then((results) => {
-                let payload = { userId: user._id };
-                let token = jwt.sign(payload, process.env.SECRET);
-                res.status(200).send({ auth: true, token: token , results});
-              })
-              .catch(err => res.send(err.message));
+    })
+    .then((results) => {
+      Song.find( {
+        userId: results._id
+      })
+    .then((results) => {
+      let payload = { userId: user._id };
+      let token = jwt.sign(payload, process.env.SECRET);
+      res.status(200).send({ auth: true, token: token , results});
+    })
+    .catch(err => res.send(err.message));
           });
       });
     });

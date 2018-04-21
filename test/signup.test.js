@@ -7,8 +7,8 @@ const server = require('../server.js');
 require('dotenv').config();
 
 let newUser = {
-  username: 'bill' + Math.random(),
-  password: 'password'
+  username: 'signin',
+  password: 'signin'
 };
 let badUsername = {
   password: 'windows'
